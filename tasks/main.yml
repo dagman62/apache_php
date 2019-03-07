@@ -18,3 +18,9 @@
       group: "{{ apache_group }}"
       system: yes
       state: present
+
+  - name: Install apache dependancies
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items: "{{ apache_dep_pkg }}"
