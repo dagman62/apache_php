@@ -58,3 +58,71 @@
     args:
       chdir: "{{ apr_install_dir }}"
     when: apr_configure|changed
+
+  - name: Downloading Apache APRU sources
+    get_url:
+      url: "{{ apru_tarball_url }}"
+      dest: "/tmp/{{ apru_version }}.tar.gz"
+    register: apru_source
+
+  - name: Unpacking Apache APRU
+    unarchive:
+      copy: no
+      dest: /tmp/
+      src: "{{ apru_source.dest }}"
+    when: apru_source.changed
+    register: apru_source_unpack
+
+  - name: Configuring Apache APRU source
+    command: "./configure --prefix={{ apache_home }} --with-apr={{ apache_home }}/bin/apr-1-config"
+    args:
+      chdir: "{{ apru_install_dir }}"
+    when: apru_source_unpack|changed
+    register: apru_configure
+
+  - name: Installing Apache APRU
+    become: yes
+    shell: make && make install
+    args:
+      chdir: "{{ apru_install_dir }}"
+    when: apru_configure|changed
+
+  - name: Downloading Apache sources
+    get_url:
+      url: "{{ apache_tarball_url }}"
+      dest: "/tmp/{{ apache_version }}.tar.gz"
+    register: apache_source
+
+  - name: Unpacking Apache
+    unarchive:
+      copy: no
+      dest: /tmp/
+      src: "{{ apache_source.dest }}"
+    when: apache_source.changed
+    register: apache_source_unpack
+
+  - name: Configuring Apache source
+    command: "./configure
+             --prefix={{ apache_home }} \
+             --enable-ssl --enable-proxy \
+             --enable-modules=all \
+             --enable-mods-shared=all \
+             --enable-module=so \
+             --enable-proxy-http \
+             --enable-proxy-balancer \
+             --enable-proxy-ajp \
+             --with-ssl --with-mpm=prefork \
+             --with-apr={{ apache_home }}/bin/apr-1-config \
+             --with-apr-util={{ apache_home }}/bin/apu-1-config \
+             --enable-cgi"
+    args:
+      chdir: "{{ apache_install_dir }}"
+    when: apache_source_unpack|changed
+    register: apache_configure
+
+  - name: Installing Apache
+    become: yes
+    shell: make && make install
+    args:
+      chdir: "{{ apache_install_dir }}"
+    when: apache_configure|changed
