@@ -24,3 +24,9 @@
       name: "{{ item }}"
       state: present
     with_items: "{{ apache_dep_pkg }}"
+
+  - name: Install Development tools
+    yum:
+      name: "@Development Tools"
+      state: present
+    when: ansible_os_family == "RedHat"
