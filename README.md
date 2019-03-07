@@ -5,7 +5,7 @@ Apache PHP install from source
 
 Role Variables
 --------------
-
+```
 apache_version: httpd-2.4.38
 apr_version: apr-1.6.5
 apru_version: apr-util-1.6.1
@@ -22,7 +22,7 @@ apache_user: "www-data"
 apache_group: "www-data"
 apache_home: "/opt/apache"
 apache_email: "admin@example.com"
-
+```
 Example Playbook
 ----------------
 
