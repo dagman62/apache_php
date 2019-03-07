@@ -30,3 +30,31 @@
       name: "@Development Tools"
       state: present
     when: ansible_os_family == "RedHat"
+
+  - name: Downloading Apache APR sources
+    get_url:
+      url: "{{ apr_tarball_url }}"
+      dest: "/tmp/{{ apr_version }}.tar.gz"
+    register: apr_source
+
+  - name: Unpacking Apache APR
+    unarchive:
+      copy: no
+      dest: /tmp/
+      src: "{{ apr_source.dest }}"
+    when: apr_source.changed
+    register: apr_source_unpack
+
+  - name: Configuring Apache APR source
+    command: "./configure --prefix={{ apache_home }}"
+    args:
+      chdir: "{{ apr_install_dir }}"
+    when: apr_source_unpack|changed
+    register: apr_configure
+
+  - name: Installing Apache APR
+    become: yes
+    shell: make && make install
+    args:
+      chdir: "{{ apr_install_dir }}"
+    when: apr_configure|changed
