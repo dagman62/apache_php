@@ -1,0 +1,44 @@
+      #!/bin/sh
+      #
+      # Startup script for the Apache Web Server
+      #
+      # chkconfig: 345 85 15
+      # description: Apache is a World Wide Web server.  It is used to serve \
+      #	       HTML files and CGI.
+      # processname: httpd
+      # pidfile: {{ apache_home }}/logs/httpd.pid
+      # config: {{ apache_home }}/conf/httpd.conf
+
+
+      # See how we were called.
+      case "$1" in
+      start)
+      echo -n "Starting httpd: "
+      {{ apache_home }}/bin/apachectl start
+      echo
+      touch /var/lock/subsys/httpd
+      ;;
+      stop)
+      echo -n "Shutting down http: "
+      {{ apache_home }}/bin/apachectl stop
+      echo
+      rm -f /var/lock/subsys/httpd
+      rm -f {{ apache_home }}/logs/httpd.pid
+      ;;
+      status)
+      {{ apache_home }}/bin/apachectl status
+      ;;
+      restart)
+      {{ apache_home }}/bin/apachectl restart
+      ;;
+      reload)
+      echo -n "Reloading httpd: "
+      killproc httpd -HUP
+      echo
+      ;;
+      *)
+      echo "Usage: $0 {start|stop|restart|reload|status}"
+      exit 1
+      esac
+
+      exit 0
