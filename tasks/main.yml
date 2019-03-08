@@ -164,15 +164,6 @@
       group: "{{ apache_group }}"
       mode: 0644
 
-  - name: Installing Apache init script (service)
-    become: yes
-    template:
-      src: apache.j2
-      dest: /etc/init.d/apache
-      owner: root
-      group: root
-      mode: 0755
-
   - name: Change ownership recursively apache home
     become: yes
     file:
@@ -196,6 +187,15 @@
       group: "{{ apache_group }}"
       mode: 0644
 
+  - name: Install Apache startup script
+    template:
+      src: apache.service.j2
+      dest: /etc/systemd/system/apache.service
+      owner: root
+      group: root
+      mode: 0755
+
   - name: Starting Apache
-    become: yes
-    command: "{{ apache_home }}/bin/apachectl restart"
+    service:
+      name: apache
+      state: started
