@@ -14,10 +14,8 @@ galaxy_info:
     versions:
       - 7
   galaxy_tags:
-    - apache 
-    - web 
-    - php 
+    - apache
+    - web
+    - php
 
 dependencies: []
-
-  
