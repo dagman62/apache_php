@@ -142,7 +142,31 @@
     register: php_source_unpack
 
   - name: Configuring PHP source
-    command: "./configure --prefix=/usr/local --with-zlib --enable-zip --enable-wddx --enable-sysvmsg --enable-sockets --enable-soap --enable-shmop --enable-embedded-mysqli --enable-mbstring --with-mhash --with-gettext --with-gd --enable-ftp --enable-exif --enable-dba --with-curl --enable-calendar --with-bz2 --enable-bcmath --enable-static --with-mysqli --with-pgsql --with-apxs2={{ apache_home }}/bin/apxs"
+    command: "./configure
+              --prefix=/usr/local \
+              --with-zlib \
+              --enable-zip \
+              --enable-wddx \
+              --enable-sysvmsg \
+              --enable-sockets \
+              --enable-soap \
+              --enable-shmop \
+              --enable-embedded-mysqli \
+              --enable-mbstring \
+              --with-mhash \
+              --with-gettext \
+              --with-gd \
+              --enable-ftp \
+              --enable-exif \
+              --enable-dba \
+              --with-curl \
+              --enable-calendar \
+              --with-bz2 \
+              --enable-bcmath \
+              --enable-static \
+              --with-mysqli \
+              --with-pgsql \
+              --with-apxs2={{ apache_home }}/bin/apxs"
     args:
       chdir: "{{ php_install_dir }}"
     when: php_source_unpack|changed
