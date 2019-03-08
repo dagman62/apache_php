@@ -9,7 +9,7 @@
       gid: 501
       system: yes
       state: present
-  
+
   - name: Create apache user
     user:
       name: "{{ apache_user }}"
