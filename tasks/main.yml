@@ -200,13 +200,12 @@
       name: apache
       state: started
 
- - name: Open up firewall for web
-   firewalld:
-     service: "{{ item }}"
-     permanent: yes
-     state: enabled
-   with_items:
-     - http
-     - https
-   when: ansible_os_family == "RedHat"
-
+  - name: Open up firewall for web
+    firewalld:
+      service: "{{ item }}"
+      permanent: yes
+      state: enabled
+    with_items:
+      - http
+      - https
+    when: ansible_os_family == "RedHat"
