@@ -209,3 +209,11 @@
       - http
       - https
     when: ansible_os_family == "RedHat"
+
+  - name: Open up Zone Port 80 to Public
+    firewalld:
+      port: 80/tcp
+      permanent: true
+      zone: public
+      state: enabled
+    when: ansible_os_family == "RedHat"
