@@ -16,4 +16,3 @@ apache_user: "www-data"
 apache_group: "www-data"
 apache_home: "/opt/apache"
 apache_email: "admin@example.com"
-
